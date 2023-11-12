@@ -60,6 +60,42 @@ function Dashboard(){
 
     }
 
+    async function consultar_cpf(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/cpf1?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+        }
+        catch{
+            consulta.log("error")
+        }
+
+    }
+
+    async function consulta_nome(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/nome?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+        }
+        catch{
+            consulta.log("error")
+        }
+
+    }
+
     function singout(){
 
         auth.signOut();
@@ -80,8 +116,8 @@ function Dashboard(){
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 ></input>
-                <button style={{backgroundColor:"blue"}}>C Nome</button>
-                <button style={{backgroundColor:"blue"}}>C CPF</button>
+                <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome()}}>C Nome</button>
+                <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf()}}>C CPF</button>
                 <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_telefone()}}>C Telefone</button>
                 <h3 style={{color:"black"}}>{consulta}</h3>
             </div>
