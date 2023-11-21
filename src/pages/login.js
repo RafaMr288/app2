@@ -63,7 +63,7 @@ function Login(){
 
     return (
         <div className="display-login">
-            <h2>Login RH do PCC</h2>
+            <h2>Login Painel Magnata</h2>
             <h3>Email/User</h3>
             <input type="text"
             value={email}

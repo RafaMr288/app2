@@ -1,5 +1,13 @@
 .display-dash-consulta {
 
     background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
+}
+
+button {
+    margin: 5px;
 }

@@ -23,6 +23,7 @@ function Dashboard(){
     const [email, setEmail] = useState()
     const [saldo, setSaldo] = useState(999999)
     const [consulta, setConsulta] = useState()
+    const [consulta2, setConsulta2] = useState([])
     const [input , setInput] = useState("")
     const navigate = useNavigate();
 
@@ -45,6 +46,7 @@ function Dashboard(){
     async function consultar_telefone(){
 
         try{
+            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/telefone?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -52,10 +54,13 @@ function Dashboard(){
             .catch(error=>{
                 console.log(error)
             })
-            setConsulta(api.resultado)
+            let api2 = api.resultado
+            setConsulta(api2)
+            setConsulta2(String(api.resultado).split("•"))
+            
         }
         catch{
-            consulta.log("error")
+
         }
 
     }
@@ -63,6 +68,7 @@ function Dashboard(){
     async function consultar_cpf(){
 
         try{
+            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/cpf1?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -70,10 +76,35 @@ function Dashboard(){
             .catch(error=>{
                 console.log(error)
             })
-            setConsulta(api.resultado)
+            let api2 = api.resultado
+            setConsulta(api2)
+            setConsulta2(String(api.resultado).split("•"))
+            
         }
         catch{
-            consulta.log("error")
+
+        }
+
+    }
+
+    async function consultar_placa(){
+
+        try{
+            let txt = ``
+            let api = await fetch(`https://xanax-apis.online/api/consultas/placa?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            let api2 = api.resultado
+            setConsulta(api2)
+            setConsulta2(String(api.resultado).split("•"))
+            
+        }
+        catch{
+
         }
 
     }
@@ -89,6 +120,45 @@ function Dashboard(){
                 console.log(error)
             })
             setConsulta(api.resultado)
+            setConsulta2(String(api.resultado).split("•"))
+        }
+        catch{
+            consulta.log("error")
+        }
+
+    }
+
+    async function consultar_rg(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/rg?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+            setConsulta2(String(api.resultado).split("•"))
+        }
+        catch{
+            consulta.log("error")
+        }
+
+    }
+
+    async function consultar_email(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/email?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+            setConsulta2(String(api.resultado).split("•"))
         }
         catch{
             consulta.log("error")
@@ -107,8 +177,11 @@ function Dashboard(){
         <div className="display-dash">
             <header style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
                 <h1 style={{color:"white"}}>Bem Vindo {email}</h1>
-                <button onClick={()=>{console.log(user)}}>Saldo: {saldo} admin</button>
-                <button style={{background:"red"}} onClick={()=>{singout()}}>Desconectar</button>
+                <div>
+                    <button>Status: Ativo</button>
+                    <button style={{background:"red"}} onClick={()=>{singout()}}>Desconectar</button>
+                    <button onClick={()=>{console.log(consulta2)}}>Ver</button>
+                </div>
             </header>
             <div className="display-dash-consulta">
                 <h2 style={{color:"black"}}>Consultar</h2>
@@ -116,10 +189,15 @@ function Dashboard(){
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 ></input>
-                <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome()}}>C Nome</button>
-                <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf()}}>C CPF</button>
-                <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_telefone()}}>C Telefone</button>
-                <h3 style={{color:"black"}}>{consulta}</h3>
+                <div>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome()}}>C Nome</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf()}}>C CPF</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_telefone()}}>C Telefone</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_placa()}}>C Placa</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_rg()}}>C RG</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_email()}}>C email</button>
+                </div>
+                {consulta2.map((e)=>{return (<h3 key={Math.floor(Math.random() * 10000000)} style={{color:"black"}}>{e}</h3>)})}
             </div>
         </div>
     )
