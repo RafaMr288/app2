@@ -87,6 +87,28 @@ function Dashboard(){
 
     }
 
+    async function consultar_cpf2(){
+
+        try{
+            let txt = ``
+            let api = await fetch(`https://xanax-apis.online/api/consultas/cpf2?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            let api2 = api.resultado
+            setConsulta(api2)
+            setConsulta2(String(api.resultado).split("•"))
+            
+        }
+        catch{
+
+        }
+
+    }
+
     async function consultar_placa(){
 
         try{
@@ -112,7 +134,7 @@ function Dashboard(){
     async function consulta_nome(){
 
         try{
-            let api = await fetch(`https://xanax-apis.online/api/consultas/nome?query=${input}&apitoken=painelAR`)
+            let api = await fetch(`https://xanax-apis.online/api/consultas/nome2?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
             })
@@ -121,6 +143,26 @@ function Dashboard(){
             })
             setConsulta(api.resultado)
             setConsulta2(String(api.resultado).split("•"))
+        }
+        catch{
+            consulta.log("error")
+        }
+
+    }
+
+    async function consulta_nome2(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/nome2?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+            setConsulta2(String(api.resultado).split(" "))
+            console.log(api.resultado)
         }
         catch{
             consulta.log("error")
@@ -191,13 +233,15 @@ function Dashboard(){
                 ></input>
                 <div>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome()}}>C Nome</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome2()}}>C Nome2</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf()}}>C CPF</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf2()}}>C CPF2</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_telefone()}}>C Telefone</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_placa()}}>C Placa</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_rg()}}>C RG</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_email()}}>C email</button>
                 </div>
-                {consulta2.map((e)=>{return (<h3 key={Math.floor(Math.random() * 10000000)} style={{color:"black"}}>{e}</h3>)})}
+                <textarea style={{width:"90%", height:500, fontSize:15, textAlign:"center"}} value={consulta2}></textarea>
             </div>
         </div>
     )
