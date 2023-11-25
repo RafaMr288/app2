@@ -19,11 +19,9 @@ const auth = getAuth(app)
 
 function Dashboard(){
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState()
     const [email, setEmail] = useState()
-    const [saldo, setSaldo] = useState(999999)
     const [consulta, setConsulta] = useState()
-    const [consulta2, setConsulta2] = useState([])
     const [input , setInput] = useState("")
     const navigate = useNavigate();
 
@@ -46,7 +44,6 @@ function Dashboard(){
     async function consultar_telefone(){
 
         try{
-            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/telefone?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -56,11 +53,10 @@ function Dashboard(){
             })
             let api2 = api.resultado
             setConsulta(api2)
-            setConsulta2(String(api.resultado).split("•"))
             
         }
         catch{
-
+                
         }
 
     }
@@ -68,7 +64,6 @@ function Dashboard(){
     async function consultar_cpf(){
 
         try{
-            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/cpf1?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -78,11 +73,10 @@ function Dashboard(){
             })
             let api2 = api.resultado
             setConsulta(api2)
-            setConsulta2(String(api.resultado).split("•"))
             
         }
         catch{
-
+            
         }
 
     }
@@ -90,7 +84,6 @@ function Dashboard(){
     async function consultar_cpf2(){
 
         try{
-            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/cpf2?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -100,11 +93,10 @@ function Dashboard(){
             })
             let api2 = api.resultado
             setConsulta(api2)
-            setConsulta2(String(api.resultado).split("•"))
             
         }
         catch{
-
+            
         }
 
     }
@@ -112,7 +104,6 @@ function Dashboard(){
     async function consultar_placa(){
 
         try{
-            let txt = ``
             let api = await fetch(`https://xanax-apis.online/api/consultas/placa?query=${input}&apitoken=painelAR`)
             .then(e=>{
                 return e.json()
@@ -122,11 +113,10 @@ function Dashboard(){
             })
             let api2 = api.resultado
             setConsulta(api2)
-            setConsulta2(String(api.resultado).split("•"))
             
         }
         catch{
-
+            
         }
 
     }
@@ -142,10 +132,9 @@ function Dashboard(){
                 console.log(error)
             })
             setConsulta(api.resultado)
-            setConsulta2(String(api.resultado).split("•"))
         }
         catch{
-            consulta.log("error")
+            
         }
 
     }
@@ -161,11 +150,9 @@ function Dashboard(){
                 console.log(error)
             })
             setConsulta(api.resultado)
-            setConsulta2(String(api.resultado).split(" "))
-            console.log(api.resultado)
         }
         catch{
-            consulta.log("error")
+            
         }
 
     }
@@ -181,10 +168,9 @@ function Dashboard(){
                 console.log(error)
             })
             setConsulta(api.resultado)
-            setConsulta2(String(api.resultado).split("•"))
         }
         catch{
-            consulta.log("error")
+            
         }
 
     }
@@ -200,10 +186,27 @@ function Dashboard(){
                 console.log(error)
             })
             setConsulta(api.resultado)
-            setConsulta2(String(api.resultado).split("•"))
         }
         catch{
-            consulta.log("error")
+            
+        }
+
+    }
+
+    async function consultar_ip(){
+
+        try{
+            let api = await fetch(`https://xanax-apis.online/api/consultas/ip?query=${input}&apitoken=painelAR`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            setConsulta(api.resultado)
+        }
+        catch{
+            
         }
 
     }
@@ -215,6 +218,30 @@ function Dashboard(){
 
     }
 
+    async function rastrearmento(){
+
+        try {
+
+            let api = await fetch(`https://api.linketrack.com/track/json?user=teste&token=1abcd00b2731640e886fb41a8a9671ad1434c599dbaa0a0de9a5aa619f29a83f&codigo=${input}`)
+            .then(e=>{
+                return e.json()
+            })
+            .catch(e=>{
+                setConsulta(e)
+            })
+            console.log(api.eventos.length)
+            let txt = ""
+            for(let i=0;i<api.eventos.length;i++){
+                txt += `Data: ${api.eventos[i].data} - Hora: ${api.eventos[i].hora} - Local: ${api.eventos[i].local} - Status: ${api.eventos[i].status} ${api.eventos[i].subStatus[1]}\n\n `
+            }
+            setConsulta(txt)
+        }
+        catch{
+
+        }
+
+    }
+
     return (
         <div className="display-dash">
             <header style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
@@ -222,7 +249,7 @@ function Dashboard(){
                 <div>
                     <button>Status: Ativo</button>
                     <button style={{background:"red"}} onClick={()=>{singout()}}>Desconectar</button>
-                    <button onClick={()=>{console.log(consulta2)}}>Ver</button>
+                    <button onClick={()=>{console.log(consulta)}}>Ver</button>
                 </div>
             </header>
             <div className="display-dash-consulta">
@@ -233,15 +260,17 @@ function Dashboard(){
                 ></input>
                 <div>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome()}}>C Nome</button>
-                    <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome2()}}>C Nome2</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consulta_nome2()}}>C Nome 2</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf()}}>C CPF</button>
-                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf2()}}>C CPF2</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_cpf2()}}>C CPF 2</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_telefone()}}>C Telefone</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_placa()}}>C Placa</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_rg()}}>C RG</button>
                     <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_email()}}>C email</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{consultar_ip()}}>C IP</button>
+                    <button style={{backgroundColor:"blue"}} onClick={()=>{rastrearmento()}}>C Correio rastreo</button>
                 </div>
-                <textarea style={{width:"90%", height:500, fontSize:15, textAlign:"center"}} value={consulta2}></textarea>
+                <textarea style={{width:"90%", height:500, fontSize:15, textAlign:"center"}} onChange={()=>{}} value={consulta}></textarea>
             </div>
         </div>
     )
