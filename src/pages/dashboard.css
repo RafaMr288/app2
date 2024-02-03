@@ -1,0 +1,36 @@
+.dash {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: rgb(11, 70, 122);
+    color: rgb(230, 239, 241);
+    box-shadow: 1px 1px 3px black;
+}
+
+.exit {
+    background-color: red;
+    border: none;
+    width: 70px;
+    height: 80%;
+    border-radius: 2px;
+}
+.dados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: auto;
+    color: rgb(230, 239, 241);
+    padding-top: 10px;
+}

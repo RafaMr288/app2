@@ -1,7 +1,9 @@
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { getFirestore, addDoc, collection, getDocs, doc } from "firebase/firestore";
+import "./dashboard.css"
 
 const firebaseConfig = {
     apiKey: "AIzaSyAEw0hYfUyhfiEGDrftgGih2JhLT3yFDxs",
@@ -19,13 +21,41 @@ const auth = getAuth(app)
 function Dashboard() {
 
     const navigate = useNavigate()
+    const db = getFirestore(app);
+    const col = collection(db, "dados")
+
+    const [user, setUser] = useState("")
+    const [vulgo, setVulgo] = useState("")
+    const [lado, setLado] = useState("")
+    const [cidade, setCidade] = useState("")
+    const [padrinho, setPadrinho] = useState("")
 
     useEffect(()=>{
 
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if(user){
 
+                setUser(user.email)
+                const querySnapshot = await getDocs(collection(db, "dados"));
+                const temporaryArr = [];
+                querySnapshot.forEach((doc) => {
+                    temporaryArr.push(doc.data());
+                });
+                const emaill = user.email
+                const users = temporaryArr
+                let count = users.length
                 
+                for(let i=0;i<count;i++){
+                    if(users[i].user === emaill){
+                        setCidade(users[i].cidade)
+                        setLado(users[i].lado)
+                        setVulgo(users[i].vulgo)
+                        setPadrinho(users[i].padrinho)
+                        break
+                    }else{
+
+                    }
+                }
 
             }
             else{
@@ -46,10 +76,19 @@ function Dashboard() {
 
     return (
 
-        <>
-            <h1>Bem vindo</h1>
-            <button onClick={exit}>Sair</button>
-        </>
+        <div className="dash">
+            <header>
+                <h3>Bem vindo a CENTRAL</h3>
+                <button onClick={exit} className="exit">Sair</button>
+            </header>
+            <div className="dados">
+                <h2>Registro</h2>
+                <h3>VULGO: {vulgo}</h3>
+                <h3>CIDADE: {cidade}</h3>
+                <h3>LADO: {lado}</h3>
+                <h3>PADRINHO: {padrinho}</h3>
+            </div>
+        </div>
 
     )
 
